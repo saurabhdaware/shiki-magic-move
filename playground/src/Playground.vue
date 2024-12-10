@@ -41,6 +41,7 @@ const {
 
 const example = ref(vueBefore)
 const input = ref(code.value)
+const input2 = ref(code.value)
 const highlighter = ref<Highlighter>()
 const isAnimating = ref(false)
 const rendererContainer = ref<HTMLElement>()
@@ -141,6 +142,7 @@ async function reset() {
   else
     example.value = await fetchSample(lang.value)
   input.value = example.value
+  input2.value = ''
   code.value = example.value
 }
 
@@ -148,9 +150,12 @@ async function resetOptions() {
   Object.assign(options.value, defaultOptions)
   example.value = defaultOptions.code
   input.value = defaultOptions.code
+  input2.value = ''
 }
 
 function commit() {
+  // @TODO is this what runs on commit?
+  console.log('run?? with ', input.value)
   code.value = input.value
 }
 
@@ -238,11 +243,19 @@ watch(
             Animating...
           </div>
         </div>
-        <textarea
-          v-model="input"
-          class="font-mono w-full h-full flex-auto p-4 border border-gray:20 rounded bg-transparent min-h-100"
-          @keydown.meta.enter.prevent="commit"
-        />
+        <div class="flex">
+          <textarea
+            v-model="input"
+            class="font-mono w-full h-full flex-auto p-4 border border-gray:20 rounded bg-transparent min-h-100"
+            @keydown.meta.enter.prevent="commit"
+          />
+          <textarea
+            v-model="input2"
+            class="font-mono w-full h-full flex-auto p-4 border border-gray:20 rounded bg-transparent min-h-100"
+            @keydown.meta.enter.prevent="commit"
+          />
+        </div>
+
         <div class="flex-none flex flex-wrap gap-6 items-center">
           <label class="flex flex-col gap-1">
             <div class="flex items-center justify-between">
